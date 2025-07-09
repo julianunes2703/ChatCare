@@ -1,4 +1,4 @@
-# 🤖 ChatCare – Chatbot Pós-Cirúrgico
+#  ChatCare – Chatbot Pós-Cirúrgico
 
 ChatCare é um chatbot feito com Python, Flask e modelos de linguagem natural, que responde dúvidas frequentes de pacientes após cirurgias.  
 Utiliza embeddings de frases (Sentence Transformers) para encontrar respostas similares em uma base de dados médica estruturada.
@@ -13,7 +13,7 @@ Utiliza embeddings de frases (Sentence Transformers) para encontrar respostas si
 - Sentence Transformers
 - scikit-learn
 - pandas
-- HTML + JavaScript (front-end)
+- HTML (front-end)
 
 ---
 
@@ -60,7 +60,7 @@ ChatCare/
 ├── custom_postoperative_faq.csv  # Base de conhecimento do chatbot (gerado)
 ├── index.html                  # Front-end do chatbot
 ├── .gitignore
-└── README.md                   # (você está aqui)
+└── README.md                  
 ```
 
 ---
@@ -102,23 +102,3 @@ Quando posso voltar a trabalhar após cirurgia no joelho?
 
 ---
 
-## 📦 Requisitos
-
-- Python 3.10+
-- Navegador moderno (Chrome, Firefox, Edge)
-- VS Code (recomendado) com Live Server
-
----
-
-## ❗ Observações
-
-- O chatbot **não substitui atendimento médico**. As respostas são baseadas em informações gerais sobre cuidados pós-cirúrgicos.
-- Ideal para fins educacionais, testes e demonstrações.
-
----
-
-## 👩‍💻 Desenvolvido por
-
-- Julia Nunes
-- Davi Kunsch
-- Lucas Almeida
