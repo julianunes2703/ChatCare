@@ -3,146 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <title>ChatCare - Chatbot Pós-Cirúrgico</title>
-  <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #b8d5f1;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Variáveis CSS para cores */
+        :root {
+            --primary-blue: #4A90E2; /* Um azul mais vibrante para botões e detalhes */
+            --light-blue-bg: #E3F2FD; /* Fundo mais suave */
+            --container-bg: #FFFFFF; /* Fundo do container branco */
+            --chatbox-bg: #F8FAFC; /* Fundo da caixa de chat */
+            --user-msg-bg: #DCF8C6; /* Verde claro para mensagens do usuário */
+            --bot-msg-bg: #F0F0F0; /* Cinza claro para mensagens do bot */
+            --text-color-dark: #333333;
+            --text-color-light: #666666;
+            --border-color: #E0E0E0;
+        }
 
-    .chat-container {
-        background-color: #94c4e4;
-        width: 100%;
-        max-width: 600px;
-        box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        height: 90vh;
-        padding: 20px;
-    }
+        body {
+            font-family: 'Poppins', sans-serif; /* Fonte mais moderna */
+            background-color: var(--light-blue-bg);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden; /* Evita scroll desnecessário no body */
+        }
 
-    h1 {
-        text-align: center;
-        color: #343a40;
-        margin-bottom: 10px;
-    }
+        .chat-container {
+            background-color: var(--container-bg);
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1); /* Sombra mais suave e profunda */
+            border-radius: 15px; /* Bordas mais arredondadas */
+            display: flex;
+            flex-direction: column;
+            height: 90vh; /* Mantém a altura responsiva */
+            padding: 25px; /* Mais padding interno */
+            color: var(--text-color-dark);
+            position: relative; /* Para posicionar o cabeçalho decorativo */
+            overflow: hidden; /* Garante que elementos arredondados não vazem */
+        }
 
-    #chatbox {
-        flex: 1;
-        border: 1px solid #dee2e6;
-        border-radius: 8px;
-        padding: 15px;
-        overflow-y: auto;
-        margin-bottom: 10px;
-        background-color: #f1f3f5;
-    }
+        h1 {
+            text-align: center;
+            color: var(--primary-blue); /* Cor principal para o título */
+            margin-bottom: 20px; /* Mais espaço abaixo do título */
+            font-weight: 600; /* Mais peso para o título */
+            font-size: 2em;
+        }
 
-    .message {
-        margin-bottom: 12px;
-        max-width: 80%;
-        padding: 10px 15px;
-        border-radius: 20px;
-        line-height: 1.4;
-        display: inline-block;
-        clear: both;
-    }
+        #chatbox {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            border-radius: 10px; /* Bordas arredondadas */
+            padding: 15px;
+            overflow-y: auto;
+            margin-bottom: 15px; /* Mais espaço abaixo do chatbox */
+            background-color: var(--chatbox-bg);
+            display: flex;
+            flex-direction: column; /* Para alinhar mensagens corretamente */
+            gap: 10px; /* Espaço entre as mensagens */
+        }
 
-    .user {
-        background-color: #d0ebff;
-        align-self: flex-end;
-        float: right;
-    }
+        /* Esconder a barra de rolagem mas permitir rolagem */
+        #chatbox::-webkit-scrollbar {
+            width: 8px;
+        }
+        #chatbox::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        #chatbox::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 10px;
+        }
+        #chatbox::-webkit-scrollbar-thumb:hover {
+            background: #cccccc;
+        }
 
-    .bot {
-        background-color: #e6fcf5;
-        color: #0b7285;
-        align-self: flex-start;
-        float: left;
-    }
+        .message {
+            max-width: 85%; /* Um pouco mais largo */
+            padding: 12px 18px; /* Mais padding dentro do balão */
+            border-radius: 20px; /* Bordas mais suaves */
+            line-height: 1.5;
+            position: relative; /* Para a cauda do balão */
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1); /* Pequena sombra para destaque */
+            color: var(--text-color-dark); /* Cor do texto padrão */
+        }
 
-    #input-container {
-        display: flex;
-        gap: 10px;
-        margin-top: 10px;
-    }
+        .message strong {
+            font-weight: 600; /* Deixa o nome mais destacado */
+        }
 
-    #userInput {
-        flex: 1;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ced4da;
-        font-size: 16px;
-    }
+        .user {
+            background-color: var(--user-msg-bg);
+            align-self: flex-end;
+            margin-left: auto; /* Alinha à direita */
+            border-bottom-right-radius: 5px; /* Canto inferior direito reto */
+        }
 
-    #sendBtn {
-        padding: 10px 16px;
-        background-color: #228be6;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-    }
+        .bot {
+            background-color: var(--bot-msg-bg);
+            align-self: flex-start;
+            margin-right: auto; /* Alinha à esquerda */
+            border-bottom-left-radius: 5px; /* Canto inferior esquerdo reto */
+        }
 
-    #sendBtn:hover {
-        background-color: #1971c2;
-    }
-</style>
+        /* Adicionando a "cauda" aos balões de mensagem */
+        .message::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent; /* Tamanho da cauda */
+        }
 
+        .user::after {
+            border-bottom-right-radius: 5px; /* Para a cauda se encaixar no canto */
+            border-left-color: var(--user-msg-bg);
+            border-right-color: transparent;
+            right: -8px; /* Ajuste da posição */
+        }
+
+        .bot::after {
+            border-bottom-left-radius: 5px; /* Para a cauda se encaixar no canto */
+            border-right-color: var(--bot-msg-bg);
+            border-left-color: transparent;
+            left: -8px; /* Ajuste da posição */
+        }
+
+
+        #input-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 12px; /* Mais padding */
+            border-radius: 8px; /* Bordas mais arredondadas */
+            border: 1px solid var(--border-color);
+            font-size: 1em; /* Tamanho da fonte mais legível */
+            color: var(--text-color-dark);
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Sombra interna suave */
+        }
+
+        #userInput:focus {
+            outline: none;
+            border-color: var(--primary-blue); /* Borda azul ao focar */
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2); /* Sombra de foco azul */
+        }
+
+        #sendBtn {
+            padding: 12px 20px; /* Mais padding */
+            background-color: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 8px; /* Bordas mais arredondadas */
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease; /* Transição suave */
+        }
+
+        #sendBtn:hover {
+            background-color: #3A7BBF; /* Tom mais escuro no hover */
+            transform: translateY(-1px); /* Pequeno efeito de elevação */
+        }
+
+        #sendBtn:active {
+            transform: translateY(0); /* Volta ao normal ao clicar */
+        }
+    </style>
 </head>
 <body>
     <div class="chat-container">
-    <h1>ChatCare</h1>
-    <div id="chatbox"></div>
-    <div id="input-container">
-        <input type="text" id="userInput" placeholder="Digite sua dúvida pós-cirúrgica..." />
-        <button id="sendBtn">Enviar</button>
-    </div>
+        <h1>ChatCare</h1>
+        <div id="chatbox"></div>
+        <div id="input-container">
+            <input type="text" id="userInput" placeholder="Digite sua dúvida pós-cirúrgica..." />
+            <button id="sendBtn">Enviar</button>
+        </div>
 
-    <script>
-        const chatbox = document.getElementById("chatbox");
-        const userInput = document.getElementById("userInput");
-        const sendBtn = document.getElementById("sendBtn");
+        <script>
+            const chatbox = document.getElementById("chatbox");
+            const userInput = document.getElementById("userInput");
+            const sendBtn = document.getElementById("sendBtn");
 
-        sendBtn.addEventListener("click", sendMessage);
-        userInput.addEventListener("keypress", function(e) {
-            if (e.key === "Enter") sendMessage();
-        });
-
-        function sendMessage() {
-            const message = userInput.value.trim();
-            if (message === "") return;
-
-            appendMessage("Você", message, "user");
-            userInput.value = "";
-           fetch("http://127.0.0.1:5000/chat",{
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message: message })
-            })
-            .then(res => res.json())
-            .then(data => {
-                appendMessage("ChatCare", data.response, "bot");
-            })
-            .catch(() => {
-                appendMessage("ChatCare", "Erro na comunicação com o servidor.", "bot");
+            sendBtn.addEventListener("click", sendMessage);
+            userInput.addEventListener("keypress", function(e) {
+                if (e.key === "Enter") sendMessage();
             });
-        }
 
-        function appendMessage(sender, text, className) {
-            const messageDiv = document.createElement("div");
-            messageDiv.classList.add("message", className);
-            messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
-            chatbox.appendChild(messageDiv);
-            chatbox.scrollTop = chatbox.scrollHeight;
-        }
-    </script>
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message === "") return;
+
+                appendMessage("Você", message, "user");
+                userInput.value = "";
+
+                // Scroll para o final do chatbox após enviar a mensagem do usuário
+                chatbox.scrollTop = chatbox.scrollHeight;
+
+                fetch("http://127.0.0.1:5000/chat",{
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: message })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    appendMessage("ChatCare", data.response, "bot");
+                    // Scroll para o final do chatbox após receber a resposta do bot
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                })
+                .catch(() => {
+                    appendMessage("ChatCare", "Erro na comunicação com o servidor.", "bot");
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                });
+            }
+
+            function appendMessage(sender, text, className) {
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("message", className);
+                messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+                chatbox.appendChild(messageDiv);
+            }
+        </script>
     </div>
 </body>
 </html>
